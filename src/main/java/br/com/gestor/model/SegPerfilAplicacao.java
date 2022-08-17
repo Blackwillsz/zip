@@ -48,6 +48,10 @@ public class SegPerfilAplicacao {
 	@JoinColumn(name = "id_seg_aplicacao", referencedColumnName = "id")
 	private SegAplicacao segAplicacao;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_seg_menu", referencedColumnName = "id")
+	private SegMenu segMenu;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "segPerfilAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<SegPerfil> listaPerfil = new ArrayList<>();

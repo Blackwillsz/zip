@@ -13,11 +13,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
+@FlywayDataSource
 @Entity
 @Table(name = "SEG_PERFIL")
 @JsonIgnoreProperties

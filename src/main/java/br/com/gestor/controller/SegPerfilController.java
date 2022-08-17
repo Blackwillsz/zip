@@ -53,7 +53,7 @@ public class SegPerfilController {
 	}
 
 	@PutMapping("/{id}")
-	@Transactional
+	
 	public ResponseStatusException atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form) {
 		service.atualizarPerfil(form, id);
 			return new ResponseStatusException(HttpStatus.OK);
