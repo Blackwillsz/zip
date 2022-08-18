@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -38,6 +40,10 @@ public class SegAplicacao  {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "segAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_seg_menu", referencedColumnName = "id")
+	private SegMenu segMenu;
 	
 	public SegAplicacao() {}
 
