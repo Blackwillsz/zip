@@ -7,8 +7,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,29 +45,48 @@ public class SegPerfilController {
 		return perfilPorId.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 
+//	@PostMapping
+//	public ResponseStatusException cadastrarPerfil(@RequestBody @Valid SegPerfilForm form,
+//			UriComponentsBuilder uriBuilder) {
+//		service.cadastrarPerfil(form);
+//		SegPerfil segPerfil = new SegPerfil();
+//		URI uri = uriBuilder.path("/segPerfil/{id}").buildAndExpand(segPerfil.getId()).toUri();
+//		return new ResponseStatusException(HttpStatus.CREATED);
+//	}
+
 	@PostMapping
-	@Transactional
-	public ResponseStatusException cadastrarPerfil(@RequestBody @Valid SegPerfilForm form, UriComponentsBuilder uriBuilder) {
-		service.cadastrarPerfil(form);
+	public ResponseEntity<Object> cadastrarPerfil(@RequestBody @Valid SegPerfilForm form) {
 		SegPerfil segPerfil = new SegPerfil();
-		URI uri = uriBuilder.path("/segPerfil/{id}").buildAndExpand(segPerfil.getId()).toUri();
-		return new ResponseStatusException(HttpStatus.CREATED);
+		BeanUtils.copyProperties(form, segPerfil);
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarPerfil(segPerfil));
 	}
 
-	@PutMapping("/{id}")
+//	@PutMapping("/{id}")
+//	public ResponseStatusException atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form) {
+//		service.atualizarPerfil(form, id);
+//		return new ResponseStatusException(HttpStatus.OK);
+//	}
 	
-	public ResponseStatusException atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form) {
-		service.atualizarPerfil(form, id);
-			return new ResponseStatusException(HttpStatus.OK);
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> atualizarPerfil(@PathVariable(value = "id") Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form){
+		Optional<SegPerfil> segPerfilOptional = service.buscarPorId(id);
+		if (!segPerfilOptional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil não encontrado!");
+		}
+		
+		SegPerfil segPerfil = new SegPerfil();
+		BeanUtils.copyProperties(form, segPerfil);
+		segPerfil.setId(segPerfilOptional.get().getId());
+		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarPerfil(segPerfil));
+		
 	}
-
 
 	@DeleteMapping("/{id}")
 	@Transactional
 	public void remover(@PathVariable Long id) {
-		Optional<SegPerfil> deletarPerfil = Optional.ofNullable(service.buscarPorId(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-		
+		Optional<SegPerfil> deletarPerfil = Optional.ofNullable(
+				service.buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+
 		if (deletarPerfil.isPresent()) {
 			service.deletarPorId(id);
 		}

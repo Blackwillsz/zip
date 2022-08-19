@@ -13,6 +13,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "SEG_MENU")
+@JsonIgnoreProperties
 public class SegMenu {
 	
 //	private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(SegMenu.class);
@@ -36,6 +41,7 @@ public class SegMenu {
 	private String nome;
 	private Long idSegMenuPai;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "segMenu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SegAplicacao> idSegAplicacao;
 	

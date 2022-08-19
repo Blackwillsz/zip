@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,6 +42,7 @@ public class SegAplicacao  {
 	@OneToMany(mappedBy = "segAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
 	
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_seg_menu", referencedColumnName = "id")
 	private SegMenu segMenu;
