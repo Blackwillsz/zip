@@ -45,15 +45,6 @@ public class SegPerfilController {
 		return perfilPorId.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 
-//	@PostMapping
-//	public ResponseStatusException cadastrarPerfil(@RequestBody @Valid SegPerfilForm form,
-//			UriComponentsBuilder uriBuilder) {
-//		service.cadastrarPerfil(form);
-//		SegPerfil segPerfil = new SegPerfil();
-//		URI uri = uriBuilder.path("/segPerfil/{id}").buildAndExpand(segPerfil.getId()).toUri();
-//		return new ResponseStatusException(HttpStatus.CREATED);
-//	}
-
 	@PostMapping
 	public ResponseEntity<Object> cadastrarPerfil(@RequestBody @Valid SegPerfilForm form) {
 		SegPerfil segPerfil = new SegPerfil();
@@ -61,15 +52,10 @@ public class SegPerfilController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarPerfil(segPerfil));
 	}
 
-//	@PutMapping("/{id}")
-//	public ResponseStatusException atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form) {
-//		service.atualizarPerfil(form, id);
-//		return new ResponseStatusException(HttpStatus.OK);
-//	}
-	
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualizarPerfil(@PathVariable(value = "id") Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form){
 		Optional<SegPerfil> segPerfilOptional = service.buscarPorId(id);
+		
 		if (!segPerfilOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil não encontrado!");
 		}
@@ -78,7 +64,6 @@ public class SegPerfilController {
 		BeanUtils.copyProperties(form, segPerfil);
 		segPerfil.setId(segPerfilOptional.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarPerfil(segPerfil));
-		
 	}
 
 	@DeleteMapping("/{id}")

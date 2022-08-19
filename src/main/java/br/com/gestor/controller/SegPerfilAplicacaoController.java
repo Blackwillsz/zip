@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,22 +60,35 @@ public class SegPerfilAplicacaoController {
 		return service.buscarPerfil(id, paginacao);
 	}
 	
+//	@PostMapping
+//	@Transactional
+//	public ResponseStatusException cadastrar(@RequestBody @Valid SegPerfilAplicacaoForm form, Optional<SegPerfil> perfil, 
+//			Optional<SegAplicacao> aplicacao, UriComponentsBuilder uriBuilder) {
+//		
+//		Optional<SegPerfil> segPerfil = service.perfilPorId(form.getIdPerfil());
+//		Optional<SegAplicacao> segAplicacao = service.aplicacaoPorId(form.getIdAplicacao());
+//		
+//		if (segPerfil.isPresent() && segAplicacao.isPresent()) {
+//		service.cadastrarPerfilAplicacao(form, segPerfil, segAplicacao);
+//		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
+//		URI uri = uriBuilder.path("/segPerfilAplicacao/{id}").buildAndExpand(perfilAplicacao.getId()).toUri();
+//		return new ResponseStatusException(HttpStatus.CREATED);
+//		} else {
+//			return new ResponseStatusException(HttpStatus.NOT_FOUND);
+//		}
+//	}
+	
 	@PostMapping
-	@Transactional
-	public ResponseStatusException cadastrar(@RequestBody @Valid SegPerfilAplicacaoForm form, Optional<SegPerfil> perfil, 
-			Optional<SegAplicacao> aplicacao, UriComponentsBuilder uriBuilder) {
-		
+	public ResponseEntity<Object> cadastrarPerfilAplicacao(@RequestBody @Valid SegPerfilAplicacaoForm form){
 		Optional<SegPerfil> segPerfil = service.perfilPorId(form.getIdPerfil());
 		Optional<SegAplicacao> segAplicacao = service.aplicacaoPorId(form.getIdAplicacao());
 		
-		if (segPerfil.isPresent() && segAplicacao.isPresent()) {
-		service.cadastrarPerfilAplicacao(form, segPerfil, segAplicacao);
-		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
-		URI uri = uriBuilder.path("/segPerfilAplicacao/{id}").buildAndExpand(perfilAplicacao.getId()).toUri();
-		return new ResponseStatusException(HttpStatus.CREATED);
-		} else {
-			return new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!segPerfil.isPresent() && !segAplicacao.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("idPerfil e idAplicacao não foi encontrado");
 		}
+		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
+		BeanUtils.copyProperties(form, perfilAplicacao);
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarPerfilAplicacao(perfilAplicacao));
 	}
 	
 	@PutMapping("/{id}")

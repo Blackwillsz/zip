@@ -33,11 +33,11 @@ public class SegPerfilAplicacaoForm {
 	}
 
 
-	public SegPerfilAplicacao converter(SegPerfilRepository perfilRepository,  SegAplicacaoRepository aplicacaoRepository) {
-		
-		SegPerfil perfil = perfilRepository.getById(idPerfil);
-		SegAplicacao aplicacao = aplicacaoRepository.getById(idAplicacao);
-		return new SegPerfilAplicacao(perfil, aplicacao);
-	}
+//	public SegPerfilAplicacao converter(SegPerfilRepository perfilRepository,  SegAplicacaoRepository aplicacaoRepository) {
+//		
+//		SegPerfil perfil = perfilRepository.getById(idPerfil);
+//		SegAplicacao aplicacao = aplicacaoRepository.getById(idAplicacao);
+//		return new SegPerfilAplicacao(perfil, aplicacao);
+//	}
 	
 }

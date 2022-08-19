@@ -33,12 +33,12 @@ public class AtualizacaoSegAplicacaoForm {
 		this.descricao = descricao;
 	}
 
-	public SegAplicacao atualizar(Long id, SegAplicacaoRepository aplicacaoRepository) {
-		SegAplicacao aplicacao = aplicacaoRepository.getById(id);
-		aplicacao.setUrl(this.url);
-		aplicacao.setDescricao(this.descricao);
-		return aplicacao;
-	}
+//	public SegAplicacao atualizar(Long id, SegAplicacaoRepository aplicacaoRepository) {
+//		SegAplicacao aplicacao = aplicacaoRepository.getById(id);
+//		aplicacao.setUrl(this.url);
+//		aplicacao.setDescricao(this.descricao);
+//		return aplicacao;
+//	}
 	
 	
 }

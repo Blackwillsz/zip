@@ -110,5 +110,10 @@ public class SegPerfilaplicacaoService {
 			 perfilAplicacaoRepository.delete(segPerfilAplicacao);
 	}
 
+	@Transactional
+	public SegPerfilAplicacao salvarPerfilAplicacao(SegPerfilAplicacao perfilAplicacao) {
+		return perfilAplicacaoRepository.save(perfilAplicacao);
+	}
+
 
 }
