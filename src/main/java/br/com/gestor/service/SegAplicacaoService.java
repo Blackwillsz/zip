@@ -2,22 +2,17 @@ package br.com.gestor.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
 import br.com.gestor.api.ApiError;
+import br.com.gestor.dto.SegAplicacaoDto;
 import br.com.gestor.form.AtualizacaoSegAplicacaoForm;
-import br.com.gestor.form.SegAplicacaoForm;
 import br.com.gestor.model.SegAplicacao;
 import br.com.gestor.repository.SegAplicacaoRepository;
 
@@ -40,13 +35,13 @@ public class SegAplicacaoService {
 	}
 
 	@Transactional
-	public SegAplicacao cadastrarAplicacao(@Valid SegAplicacao segAplicacao) {
-		return aplicacaoRepository.save(segAplicacao);
+	public SegAplicacaoDto cadastrarAplicacao(@Valid SegAplicacao segAplicacao) {
+		return new SegAplicacaoDto(aplicacaoRepository.save(segAplicacao));
 	}
 
 	@Transactional
-	public SegAplicacao atualizarAplicacao(@RequestBody @Valid SegAplicacao segAplicacao) {
-		return aplicacaoRepository.save(segAplicacao);
+	public AtualizacaoSegAplicacaoForm atualizarAplicacao(@RequestBody @Valid SegAplicacao segAplicacao) {
+		return new AtualizacaoSegAplicacaoForm(aplicacaoRepository.save(segAplicacao));
 	}
 	
 	@Transactional

@@ -1,5 +1,6 @@
 package br.com.gestor.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,12 +19,14 @@ import javax.persistence.Version;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 @Entity
 @Table(name = "SEG_APLICACAO")
 @JsonIgnoreProperties
-public class SegAplicacao  {
+public class SegAplicacao implements Serializable {
+	
+	public static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "idGenerator")
@@ -38,8 +41,8 @@ public class SegAplicacao  {
 	
 	private String descricao;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "segAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(mappedBy = "idAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
 	
 	@JsonBackReference

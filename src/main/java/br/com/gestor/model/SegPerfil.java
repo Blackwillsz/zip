@@ -1,5 +1,6 @@
 package br.com.gestor.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,8 +24,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "SEG_PERFIL")
 @JsonIgnoreProperties
-public class SegPerfil {
+public class SegPerfil implements Serializable {
 	
+	public static final long serialVersionUID = 1L;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "idGenerator")
@@ -36,8 +39,9 @@ public class SegPerfil {
 
 	private String descricao;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "segPerfil", fetch = FetchType.LAZY, cascade = (CascadeType.ALL))
+	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@OneToMany(mappedBy = "idPerfil", fetch = FetchType.LAZY, cascade = (CascadeType.ALL))
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
 	
 

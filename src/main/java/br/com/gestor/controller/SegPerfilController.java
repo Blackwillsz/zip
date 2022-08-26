@@ -1,6 +1,5 @@
 package br.com.gestor.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.gestor.form.AtualizacaoSegPerfilForm;
 import br.com.gestor.form.SegPerfilForm;
@@ -35,7 +34,14 @@ public class SegPerfilController {
 	private SegPerfilService service;
 
 	@GetMapping
-	public List<SegPerfil> buscarPerfil() {
+	public List<SegPerfil> buscarPerfil(@RequestParam(
+            value = "page",
+            required = false,
+            defaultValue = "0") int page,
+    @RequestParam(
+            value = "size",
+            required = false,
+            defaultValue = "10") int size)  {
 		return service.buscarTodos();
 	}
 

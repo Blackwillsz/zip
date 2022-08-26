@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import br.com.gestor.api.ApiError;
+import br.com.gestor.dto.SegPerfilAplicacaoDto;
 import br.com.gestor.dto.SegPerfilDto;
 import br.com.gestor.form.AtualizarPerfilAplicacaoForm;
 import br.com.gestor.form.SegPerfilAplicacaoForm;
@@ -67,6 +68,7 @@ public class SegPerfilaplicacaoService {
 		return SegPerfilDto.converter(perfilAplicacao);
 	}
 
+	@Transactional
 	public void cadastrarPerfilAplicacao(@Valid SegPerfilAplicacaoForm form, Optional<SegPerfil> perfil,
 			Optional<SegAplicacao> aplicacao) {
 		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
@@ -111,8 +113,8 @@ public class SegPerfilaplicacaoService {
 	}
 
 	@Transactional
-	public SegPerfilAplicacao salvarPerfilAplicacao(SegPerfilAplicacao perfilAplicacao) {
-		return perfilAplicacaoRepository.save(perfilAplicacao);
+	public SegPerfilAplicacaoDto salvarPerfilAplicacao(SegPerfilAplicacao perfilAplicacao) {
+		return new SegPerfilAplicacaoDto(perfilAplicacaoRepository.save(perfilAplicacao));
 	}
 
 

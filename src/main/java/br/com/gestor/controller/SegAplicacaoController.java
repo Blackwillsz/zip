@@ -53,14 +53,15 @@ public class SegAplicacaoController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoSegAplicacaoForm form){
+	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody @Valid SegAplicacaoForm form){
 		Optional<SegAplicacao> segAplicacaoOptional = service.burcarAplicacaoPorId(id);
+		
 		if (!segAplicacaoOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aplicação não encontrada!");
 		}
 		
 		SegAplicacao segAplicacao = new SegAplicacao();
-		BeanUtils.copyProperties(form, segAplicacao);
+		BeanUtils.copyProperties(form, segAplicacao, "id");
 		segAplicacao.setId(segAplicacaoOptional.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarAplicacao(segAplicacao));
 	}

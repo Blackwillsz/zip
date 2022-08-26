@@ -79,13 +79,15 @@ public class SegPerfilAplicacaoController {
 //	}
 	
 	@PostMapping
-	public ResponseEntity<Object> cadastrarPerfilAplicacao(@RequestBody @Valid SegPerfilAplicacaoForm form){
+	public ResponseEntity<Object> cadastrarPerfilAplicacao(@RequestBody SegPerfilAplicacaoForm form){
+		
 		Optional<SegPerfil> segPerfil = service.perfilPorId(form.getIdPerfil());
 		Optional<SegAplicacao> segAplicacao = service.aplicacaoPorId(form.getIdAplicacao());
 		
 		if (!segPerfil.isPresent() && !segAplicacao.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("idPerfil e idAplicacao não foi encontrado");
 		}
+		
 		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
 		BeanUtils.copyProperties(form, perfilAplicacao);
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarPerfilAplicacao(perfilAplicacao));

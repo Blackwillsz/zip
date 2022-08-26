@@ -4,19 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.gestor.form.AtualizacaoSegPerfilForm;
-import br.com.gestor.form.SegPerfilForm;
+import br.com.gestor.dto.SegPerfilDto;
 import br.com.gestor.model.SegPerfil;
 import br.com.gestor.repository.SegPerfilRepository;
 
@@ -35,8 +28,8 @@ public class SegPerfilService {
 	}
 
 	@Transactional
-	public SegPerfil cadastrarPerfil(SegPerfil segPerfil) {
-		return repository.save(segPerfil);
+	public SegPerfilDto cadastrarPerfil(SegPerfil segPerfil) {
+		return new SegPerfilDto(repository.save(segPerfil));
 	}
 
 //	@Transactional
@@ -58,8 +51,8 @@ public class SegPerfilService {
 //	}
 	
 	@Transactional
-	public SegPerfil atualizarPerfil(SegPerfil segPerfil) {
-		return repository.save(segPerfil);
+	public SegPerfilDto atualizarPerfil(SegPerfil segPerfil) {
+		return new SegPerfilDto(repository.save(segPerfil));
 	}
 	
 	

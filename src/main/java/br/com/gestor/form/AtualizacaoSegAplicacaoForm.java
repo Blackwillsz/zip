@@ -17,6 +17,11 @@ public class AtualizacaoSegAplicacaoForm {
 	@NotNull @NotEmpty @Length(min = 5)
 	private String descricao;
 
+	public AtualizacaoSegAplicacaoForm(@Valid SegAplicacao save) {
+		this.url = save.getUrl();
+		this.descricao = save.getDescricao();
+	}
+
 	public String getUrl() {
 		return url;
 	}

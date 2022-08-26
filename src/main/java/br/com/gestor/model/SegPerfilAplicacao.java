@@ -1,5 +1,6 @@
 package br.com.gestor.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "SEG_PERFIL_APLICACAO")
 @JsonIgnoreProperties
-public class SegPerfilAplicacao {
+public class SegPerfilAplicacao implements Serializable {
 	
-	
+	public static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator  = "idGeneration")
 	@SequenceGenerator(name = "idGeneration", sequenceName = "SEQ_SEG_PERFIL_APLICACAO", allocationSize = 1)
@@ -38,25 +40,26 @@ public class SegPerfilAplicacao {
 	@JsonIgnore
 	private Integer paginaInicial;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_seg_perfil", referencedColumnName = "id")
-	private SegPerfil segPerfil;
-	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_seg_aplicacao", referencedColumnName = "id")
-	private SegAplicacao segAplicacao;
+	private SegPerfil idPerfil;
 	
 	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_seg_aplicacao", referencedColumnName = "id")
+	private SegAplicacao idAplicacao;
+	
+	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "segPerfilAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<SegPerfil> listaPerfil = new ArrayList<>();
 	
 	public SegPerfilAplicacao() {}
 	
 	public SegPerfilAplicacao( SegPerfil perfil, SegAplicacao aplicacao) {
-		this.segPerfil = perfil;
-		this.segAplicacao = aplicacao;
+		this.idPerfil = perfil;
+		this.idAplicacao = aplicacao;
 	}
 	
 
@@ -77,19 +80,19 @@ public class SegPerfilAplicacao {
 	}
 
 	public SegAplicacao getSegAplicacao() {
-		return segAplicacao;
+		return idAplicacao;
 	}
 
 	public void setSegAplicacao(SegAplicacao segAplicacao) {
-		this.segAplicacao = segAplicacao;
+		this.idAplicacao = segAplicacao;
 	}
 
 	public SegPerfil getSegPerfil() {
-		return segPerfil;
+		return idPerfil;
 	}
 
 	public void setSegPerfil(SegPerfil segPerfil) {
-		this.segPerfil = segPerfil;
+		this.idPerfil = segPerfil;
 	}
 
 	public Integer getPaginaInicial() {
@@ -138,7 +141,7 @@ public class SegPerfilAplicacao {
 	@Override
 	public String toString() {
 		return "SegPerfilAplicacao [id=" + id + ", jversion=" + jversion + ", paginaInicial=" + paginaInicial
-				+ ", segAplicacao=" + segAplicacao + ", segPerfil=" + segPerfil +  "]";
+				+ ", segAplicacao=" + idAplicacao + ", segPerfil=" + idPerfil +  "]";
 	}
 
 	
