@@ -1,12 +1,11 @@
 package br.com.gestor.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.gestor.dto.SegPerfilDto;
 import br.com.gestor.form.AtualizarPerfilAplicacaoForm;
@@ -79,7 +76,7 @@ public class SegPerfilAplicacaoController {
 //	}
 	
 	@PostMapping
-	public ResponseEntity<Object> cadastrarPerfilAplicacao(@RequestBody SegPerfilAplicacaoForm form){
+	public ResponseEntity<Object> cadastrarPerfilAplicacao(@RequestBody @Valid SegPerfilAplicacaoForm form){
 		
 		Optional<SegPerfil> segPerfil = service.perfilPorId(form.getIdPerfil());
 		Optional<SegAplicacao> segAplicacao = service.aplicacaoPorId(form.getIdAplicacao());
@@ -87,9 +84,9 @@ public class SegPerfilAplicacaoController {
 		if (!segPerfil.isPresent() && !segAplicacao.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("idPerfil e idAplicacao não foi encontrado");
 		}
-		
 		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
-		BeanUtils.copyProperties(form, perfilAplicacao);
+		perfilAplicacao.setSegPerfil(segPerfil.get());
+		perfilAplicacao.setSegAplicacao(segAplicacao.get());
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarPerfilAplicacao(perfilAplicacao));
 	}
 	

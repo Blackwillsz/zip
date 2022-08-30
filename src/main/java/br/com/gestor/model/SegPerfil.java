@@ -20,10 +20,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
+
 @FlywayDataSource
 @Entity
 @Table(name = "SEG_PERFIL")
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
 public class SegPerfil implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
@@ -37,10 +40,10 @@ public class SegPerfil implements Serializable {
 	@Version
 	private Long jversion;
 
+	@JsonIgnore
 	private String descricao;
 	
 	@JsonIgnore
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "idPerfil", fetch = FetchType.LAZY, cascade = (CascadeType.ALL))
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
 	

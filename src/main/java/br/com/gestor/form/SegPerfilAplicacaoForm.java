@@ -2,12 +2,6 @@ package br.com.gestor.form;
 
 import javax.validation.constraints.NotNull;
 
-import br.com.gestor.model.SegAplicacao;
-import br.com.gestor.model.SegPerfil;
-import br.com.gestor.model.SegPerfilAplicacao;
-import br.com.gestor.repository.SegAplicacaoRepository;
-import br.com.gestor.repository.SegPerfilRepository;
-
 public class SegPerfilAplicacaoForm {
 	
 	@NotNull 

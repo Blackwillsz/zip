@@ -16,14 +16,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "SEG_APLICACAO")
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
 public class SegAplicacao implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
@@ -34,7 +35,6 @@ public class SegAplicacao implements Serializable {
 	private Long id;
 	
 	@Version
-	@JsonIgnore
 	private Long jversion;
 	
 	private String url;
@@ -45,7 +45,6 @@ public class SegAplicacao implements Serializable {
 	@OneToMany(mappedBy = "idAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
 	
-	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_seg_menu", referencedColumnName = "id")
 	private SegMenu segMenu;

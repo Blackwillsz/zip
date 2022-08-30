@@ -21,9 +21,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AllArgsConstructor;
+
 @Entity
 @Table(name = "SEG_PERFIL_APLICACAO")
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
 public class SegPerfilAplicacao implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
@@ -34,24 +37,22 @@ public class SegPerfilAplicacao implements Serializable {
 	private Long id;
 	
 	@Version
-	@JsonIgnore
 	private Long jversion;
 	
-	@JsonIgnore
 	private Integer paginaInicial;
 
-	@JsonIgnore
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_seg_perfil", referencedColumnName = "id")
 	private SegPerfil idPerfil;
 	
-	@JsonIgnore
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_seg_aplicacao", referencedColumnName = "id")
 	private SegAplicacao idAplicacao;
 	
+	
 	@JsonIgnore
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "segPerfilAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<SegPerfil> listaPerfil = new ArrayList<>();
 	

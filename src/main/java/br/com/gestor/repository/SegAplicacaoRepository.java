@@ -8,7 +8,7 @@ import br.com.gestor.model.SegAplicacao;
 
 public interface SegAplicacaoRepository extends JpaRepository<SegAplicacao, Long> {
 	
-	Optional<SegAplicacao> findById(Long id);
+	Optional<SegAplicacao> findById(SegAplicacao idAplicacao);
 	
 	
 }

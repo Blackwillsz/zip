@@ -6,9 +6,13 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -46,12 +50,12 @@ public class SegPerfilaplicacaoService {
 	public Optional<SegPerfilAplicacao> buscarPorId(Long id) {
 		return perfilAplicacaoRepository.findById(id);
 	}
-	public Optional<SegPerfil> perfilPorId(Long id) {
-		return perfilRepository.findById(id);
+	public Optional<SegPerfil> perfilPorId(Long idPerfil) {
+		return perfilRepository.findById(idPerfil);
 	}
 
-	public Optional<SegAplicacao> aplicacaoPorId(Long id) {
-		return aplicacaoRepository.findById(id);
+	public Optional<SegAplicacao> aplicacaoPorId(Long idAplicacao) {
+		return aplicacaoRepository.findById(idAplicacao);
 	}
 
 	public List<SegPerfilAplicacao> buscarPerfilAplicacao() {
@@ -116,6 +120,11 @@ public class SegPerfilaplicacaoService {
 	public SegPerfilAplicacaoDto salvarPerfilAplicacao(SegPerfilAplicacao perfilAplicacao) {
 		return new SegPerfilAplicacaoDto(perfilAplicacaoRepository.save(perfilAplicacao));
 	}
+
+//	public void converterForm(@Valid SegPerfilAplicacaoForm form) {
+//		
+//		
+//	}
 
 
 }

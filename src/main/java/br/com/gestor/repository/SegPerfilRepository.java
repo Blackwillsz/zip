@@ -10,7 +10,7 @@ import br.com.gestor.model.SegPerfil;
 
 public interface SegPerfilRepository extends JpaRepository<SegPerfil, Long>{
 
-	Optional<SegPerfil> findById(Long id);
+	Optional<SegPerfil> findById(SegPerfil idPerfil);
 	
 	Page<SegPerfil> findById(Long id, Pageable paginacao);
 	
