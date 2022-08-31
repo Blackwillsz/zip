@@ -17,6 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,7 +27,7 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "SEG_PERFIL_APLICACAO")
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 public class SegPerfilAplicacao implements Serializable {
 	
@@ -50,7 +52,6 @@ public class SegPerfilAplicacao implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_seg_aplicacao", referencedColumnName = "id")
 	private SegAplicacao idAplicacao;
-	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "segPerfilAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

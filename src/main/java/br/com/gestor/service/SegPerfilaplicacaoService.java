@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -121,10 +122,18 @@ public class SegPerfilaplicacaoService {
 		return new SegPerfilAplicacaoDto(perfilAplicacaoRepository.save(perfilAplicacao));
 	}
 
-//	public void converterForm(@Valid SegPerfilAplicacaoForm form) {
-//		
-//		
-//	}
+	public SegPerfilAplicacaoDto converterForm(@Valid SegPerfilAplicacaoForm form) {
+		Optional<SegPerfil> segPerfil = perfilPorId(form.getIdPerfil());
+		Optional<SegAplicacao> segAplicacao = aplicacaoPorId(form.getIdAplicacao());
+		
+		if (!segPerfil.isPresent() && !segAplicacao.isPresent()) {
+			 return null;
+		}
+		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
+		perfilAplicacao.setSegPerfil(segPerfil.get());
+		perfilAplicacao.setSegAplicacao(segAplicacao.get());
+		return salvarPerfilAplicacao(perfilAplicacao);
+	}
 
 
 }

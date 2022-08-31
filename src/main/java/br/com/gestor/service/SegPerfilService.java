@@ -7,6 +7,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import br.com.gestor.dto.SegPerfilDto;
@@ -19,7 +22,7 @@ public class SegPerfilService {
 	@Autowired
 	private SegPerfilRepository repository;
 
-	public List<SegPerfil> buscarTodos() {
+	public List<SegPerfil> buscarTodos(Pageable pageable) {
 		return repository.findAll();
 	}
 

@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 @FlywayDataSource
 @Entity
 @Table(name = "SEG_PERFIL")
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 public class SegPerfil implements Serializable {
 	

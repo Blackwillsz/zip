@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "SEG_APLICACAO")
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 public class SegAplicacao implements Serializable {
 	

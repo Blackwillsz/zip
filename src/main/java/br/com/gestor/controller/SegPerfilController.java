@@ -8,6 +8,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,15 +36,8 @@ public class SegPerfilController {
 	private SegPerfilService service;
 
 	@GetMapping
-	public List<SegPerfil> buscarPerfil(@RequestParam(
-            value = "page",
-            required = false,
-            defaultValue = "0") int page,
-    @RequestParam(
-            value = "size",
-            required = false,
-            defaultValue = "10") int size)  {
-		return service.buscarTodos();
+	public List<SegPerfil> buscarPerfil(@PageableDefault (page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+		return service.buscarTodos(pageable);
 	}
 
 	@GetMapping("/{id}")
