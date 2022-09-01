@@ -15,10 +15,8 @@ import br.com.gestor.repository.SegPerfilRepository;
 
 public class AtualizarPerfilAplicacaoForm {
 	
-	@NotNull
 	private Long idPerfil;
 	
-	@NotNull
 	private Long idAplicacao;
 	
 	public Long getIdPerfil() {

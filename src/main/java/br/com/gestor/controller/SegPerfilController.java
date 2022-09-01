@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.gestor.dto.SegPerfilDto;
 import br.com.gestor.form.AtualizacaoSegPerfilForm;
 import br.com.gestor.form.SegPerfilForm;
 import br.com.gestor.model.SegPerfil;
@@ -36,7 +37,8 @@ public class SegPerfilController {
 	private SegPerfilService service;
 
 	@GetMapping
-	public List<SegPerfil> buscarPerfil(@PageableDefault (page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+	public List<SegPerfil> buscarPerfil(
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 		return service.buscarTodos(pageable);
 	}
 
@@ -48,34 +50,19 @@ public class SegPerfilController {
 
 	@PostMapping
 	public ResponseEntity<Object> cadastrarPerfil(@RequestBody @Valid SegPerfilForm form) {
-		SegPerfil segPerfil = new SegPerfil();
-		BeanUtils.copyProperties(form, segPerfil);
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarPerfil(segPerfil));
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarPerfil(form));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizarPerfil(@PathVariable(value = "id") Long id, @RequestBody @Valid AtualizacaoSegPerfilForm form){
-		Optional<SegPerfil> segPerfilOptional = service.buscarPorId(id);
-		
-		if (!segPerfilOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil não encontrado!");
-		}
-		
-		SegPerfil segPerfil = new SegPerfil();
-		BeanUtils.copyProperties(form, segPerfil);
-		segPerfil.setId(segPerfilOptional.get().getId());
-		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarPerfil(segPerfil));
+	public ResponseEntity<Object> atualizarPerfil(@PathVariable(value = "id") Long id,
+			@RequestBody @Valid AtualizacaoSegPerfilForm form) {
+		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarPerfil(form, id));
 	}
 
 	@DeleteMapping("/{id}")
-	@Transactional
 	public void remover(@PathVariable Long id) {
-		Optional<SegPerfil> deletarPerfil = Optional.ofNullable(
-				service.buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+		service.deletarPorId(id);
 
-		if (deletarPerfil.isPresent()) {
-			service.deletarPorId(id);
-		}
 	}
 
 }

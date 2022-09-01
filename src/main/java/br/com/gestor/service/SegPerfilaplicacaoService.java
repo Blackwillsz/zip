@@ -51,6 +51,7 @@ public class SegPerfilaplicacaoService {
 	public Optional<SegPerfilAplicacao> buscarPorId(Long id) {
 		return perfilAplicacaoRepository.findById(id);
 	}
+
 	public Optional<SegPerfil> perfilPorId(Long idPerfil) {
 		return perfilRepository.findById(idPerfil);
 	}
@@ -82,7 +83,8 @@ public class SegPerfilaplicacaoService {
 		perfilAplicacaoRepository.save(perfilAplicacao);
 	}
 
-	public SegPerfilAplicacao atualizarPerfilAplicacao(@Valid @PathVariable Long id,
+	@Transactional
+	public SegPerfilAplicacaoDto atualizarPerfilAplicacao(@Valid @PathVariable Long id,
 			AtualizarPerfilAplicacaoForm form) {
 
 		Optional<SegPerfilAplicacao> perfilAplicacao = perfilAplicacaoRepository.findById(id);
@@ -91,30 +93,21 @@ public class SegPerfilaplicacaoService {
 			Optional<SegPerfil> segPerfil = perfilRepository.findById(form.getIdPerfil());
 			Optional<SegAplicacao> segAplicaccao = aplicacaoRepository.findById(form.getIdAplicacao());
 
-			if (segPerfil.isPresent()) {
-				perfilAplicacao.get().setSegPerfil(new SegPerfil());
+			perfilAplicacao.get().setSegPerfil(new SegPerfil());
+			perfilAplicacao.get().setSegAplicacao(new SegAplicacao());
+
+			if (segPerfil.isPresent() && segAplicaccao.isPresent()) {
 				perfilAplicacao.get().setSegPerfil(segPerfil.get());
-			} else {
-				return null;
-			}
-
-			if (segAplicaccao.isPresent()) {
-				perfilAplicacao.get().setSegAplicacao(new SegAplicacao());
 				perfilAplicacao.get().setSegAplicacao(segAplicaccao.get());
-			} else {
-				return null;
 			}
-
-		} else {
-			return null;
 		}
-		return perfilAplicacaoRepository.save(perfilAplicacao.isPresent() ? perfilAplicacao.get() : null);
+		return new SegPerfilAplicacaoDto(
+				perfilAplicacaoRepository.save(perfilAplicacao.isPresent() ? perfilAplicacao.get() : null));
 	}
 
-	
 	@Transactional
 	public void deletar(SegPerfilAplicacao segPerfilAplicacao) {
-			 perfilAplicacaoRepository.delete(segPerfilAplicacao);
+		perfilAplicacaoRepository.delete(segPerfilAplicacao);
 	}
 
 	@Transactional
@@ -125,15 +118,13 @@ public class SegPerfilaplicacaoService {
 	public SegPerfilAplicacaoDto converterForm(@Valid SegPerfilAplicacaoForm form) {
 		Optional<SegPerfil> segPerfil = perfilPorId(form.getIdPerfil());
 		Optional<SegAplicacao> segAplicacao = aplicacaoPorId(form.getIdAplicacao());
-		
-		if (!segPerfil.isPresent() && !segAplicacao.isPresent()) {
-			 return null;
+		if (!segPerfil.isPresent() || !segAplicacao.isPresent()) {
+			return null;
 		}
 		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
 		perfilAplicacao.setSegPerfil(segPerfil.get());
 		perfilAplicacao.setSegAplicacao(segAplicacao.get());
 		return salvarPerfilAplicacao(perfilAplicacao);
 	}
-
 
 }

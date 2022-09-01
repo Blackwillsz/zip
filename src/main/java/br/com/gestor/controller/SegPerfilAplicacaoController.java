@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.gestor.dto.SegPerfilAplicacaoDto;
 import br.com.gestor.dto.SegPerfilDto;
 import br.com.gestor.form.AtualizarPerfilAplicacaoForm;
 import br.com.gestor.form.SegPerfilAplicacaoForm;
@@ -64,12 +65,11 @@ public class SegPerfilAplicacaoController {
 	}
 	
 	@PutMapping("/{id}")
-	@Transactional
 	public ResponseEntity<String> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarPerfilAplicacaoForm form){
-		SegPerfilAplicacao retorno =  service.atualizarPerfilAplicacao(id, form);
+		SegPerfilAplicacaoDto retorno =  service.atualizarPerfilAplicacao(id, form);
 		
-		if(retorno !=null) {
-			return ResponseEntity.status(HttpStatus.CREATED).body("Atualizado com Sucesso!");
+		if(retorno != null) {
+			return ResponseEntity.status(HttpStatus.OK).body("Atualizado com Sucesso!");
 		}else {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Verificar as Informações");
 		}

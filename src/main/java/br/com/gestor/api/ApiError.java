@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
 import antlr.TokenStreamException;
+import br.com.gestor.model.SegPerfilAplicacao;
 
 @RestControllerAdvice
 public class ApiError {
@@ -68,5 +69,7 @@ public class ApiError {
 
 		return new ResponseEntity(model, httpStatus);
 	}
+
+	
 
 }

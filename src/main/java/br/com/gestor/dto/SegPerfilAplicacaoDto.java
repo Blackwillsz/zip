@@ -21,6 +21,9 @@ public class SegPerfilAplicacaoDto {
 		this.aplicacao = perfilAplicacao.getSegAplicacao();
 	}
 
+	public SegPerfilAplicacaoDto() {
+	}
+
 	public Long getId() {
 		return id;
 	}

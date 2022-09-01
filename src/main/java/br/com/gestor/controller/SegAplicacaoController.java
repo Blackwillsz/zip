@@ -60,7 +60,7 @@ public class SegAplicacaoController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aplicação não encontrada!");
 		}
 		
-		SegAplicacao segAplicacao = new SegAplicacao();
+		SegAplicacao segAplicacao = segAplicacaoOptional.get();
 		BeanUtils.copyProperties(form, segAplicacao, "id");
 		segAplicacao.setId(segAplicacaoOptional.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarAplicacao(segAplicacao));

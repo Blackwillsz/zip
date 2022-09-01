@@ -5,14 +5,16 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.gestor.dto.SegPerfilDto;
+import br.com.gestor.form.AtualizacaoSegPerfilForm;
+import br.com.gestor.form.SegPerfilForm;
 import br.com.gestor.model.SegPerfil;
 import br.com.gestor.repository.SegPerfilRepository;
 
@@ -31,36 +33,29 @@ public class SegPerfilService {
 	}
 
 	@Transactional
-	public SegPerfilDto cadastrarPerfil(SegPerfil segPerfil) {
+	public SegPerfilDto cadastrarPerfil(SegPerfilForm form) {
+		SegPerfil segPerfil = new SegPerfil();
+		BeanUtils.copyProperties(form, segPerfil);
 		return new SegPerfilDto(repository.save(segPerfil));
 	}
 
-//	@Transactional
-//	public ResponseEntity<Object> atualizarPerfil(@Valid @RequestBody AtualizacaoSegPerfilForm form,
-//			@PathVariable Long id) {
-//		Optional<SegPerfil> atualizarPerfil = repository.findById(id);
-//
-//		System.out.println("##################" + form);
-//		if (!atualizarPerfil.isPresent()) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não é possivel atualizar perfil");
-//		}
-//
-//		SegPerfil segPerfil = new SegPerfil();
-//		BeanUtils.copyProperties(form, atualizarPerfil);
-//		repository.save(segPerfil);
-//
-//		System.out.println("#################" + atualizarPerfil.get());
-//		return ResponseEntity.status(HttpStatus.CREATED).body("Perfil atualizado");
-//	}
-	
 	@Transactional
-	public SegPerfilDto atualizarPerfil(SegPerfil segPerfil) {
-		return new SegPerfilDto(repository.save(segPerfil));
-	}
-	
-	
+	public SegPerfilDto atualizarPerfil(AtualizacaoSegPerfilForm form, Long id) {
+		Optional<SegPerfil> segPerfilOptional = buscarPorId(id);
 
+		if (segPerfilOptional.isPresent()) {
+			SegPerfil segPerfil = segPerfilOptional.get();
+			BeanUtils.copyProperties(form, segPerfil);
+			segPerfil.setId(segPerfilOptional.get().getId());
+			return new SegPerfilDto(repository.save(segPerfil));
+		}
+		return new SegPerfilDto(null);
+	}
+
+	@Transactional
 	public void deletarPorId(Long id) {
+		Optional<SegPerfil> deletarPerfil = Optional
+				.ofNullable(buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
 		repository.deleteById(id);
 	}
 
