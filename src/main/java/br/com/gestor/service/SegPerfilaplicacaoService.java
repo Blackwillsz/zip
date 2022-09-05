@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.gestor.api.ApiError;
 import br.com.gestor.dto.SegPerfilAplicacaoDto;
@@ -75,30 +76,21 @@ public class SegPerfilaplicacaoService {
 	}
 
 	@Transactional
-	public void cadastrarPerfilAplicacao(@Valid SegPerfilAplicacaoForm form, Optional<SegPerfil> perfil,
-			Optional<SegAplicacao> aplicacao) {
-		SegPerfilAplicacao perfilAplicacao = new SegPerfilAplicacao();
-		perfilAplicacao.setSegPerfil(perfil.get());
-		perfilAplicacao.setSegAplicacao(aplicacao.get());
-		perfilAplicacaoRepository.save(perfilAplicacao);
-	}
-
-	@Transactional
-	public SegPerfilAplicacaoDto atualizarPerfilAplicacao(@Valid @PathVariable Long id,
+	public SegPerfilAplicacaoDto atualizarPerfilAplicacao(@PathVariable Long id, @Valid
 			AtualizarPerfilAplicacaoForm form) {
 
 		Optional<SegPerfilAplicacao> perfilAplicacao = perfilAplicacaoRepository.findById(id);
 		if (perfilAplicacao.isPresent()) {
 
 			Optional<SegPerfil> segPerfil = perfilRepository.findById(form.getIdPerfil());
-			Optional<SegAplicacao> segAplicaccao = aplicacaoRepository.findById(form.getIdAplicacao());
+			Optional<SegAplicacao> segAplicacao = aplicacaoRepository.findById(form.getIdAplicacao());
 
 			perfilAplicacao.get().setSegPerfil(new SegPerfil());
 			perfilAplicacao.get().setSegAplicacao(new SegAplicacao());
 
-			if (segPerfil.isPresent() && segAplicaccao.isPresent()) {
+			if (segPerfil.isPresent() && segAplicacao.isPresent()) {
 				perfilAplicacao.get().setSegPerfil(segPerfil.get());
-				perfilAplicacao.get().setSegAplicacao(segAplicaccao.get());
+				perfilAplicacao.get().setSegAplicacao(segAplicacao.get());
 			}
 		}
 		return new SegPerfilAplicacaoDto(
@@ -106,8 +98,10 @@ public class SegPerfilaplicacaoService {
 	}
 
 	@Transactional
-	public void deletar(SegPerfilAplicacao segPerfilAplicacao) {
-		perfilAplicacaoRepository.delete(segPerfilAplicacao);
+	public void deletar(Long id) {
+		Optional<SegPerfilAplicacao> buscarPerfilAplicacao = Optional.ofNullable(
+				buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+		perfilAplicacaoRepository.deleteById(id);
 	}
 
 	@Transactional

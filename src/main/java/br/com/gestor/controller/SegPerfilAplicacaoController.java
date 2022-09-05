@@ -67,7 +67,6 @@ public class SegPerfilAplicacaoController {
 	@PutMapping("/{id}")
 	public ResponseEntity<String> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarPerfilAplicacaoForm form){
 		SegPerfilAplicacaoDto retorno =  service.atualizarPerfilAplicacao(id, form);
-		
 		if(retorno != null) {
 			return ResponseEntity.status(HttpStatus.OK).body("Atualizado com Sucesso!");
 		}else {
@@ -76,14 +75,8 @@ public class SegPerfilAplicacaoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deletar(@PathVariable Long id) {
-		Optional<SegPerfilAplicacao> retorno =  service.buscarPorId(id);
-		
-		if(!retorno.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não Encontrado ");
-		}
-		service.deletar(retorno.get());
-			return ResponseEntity.status(HttpStatus.OK).body("Excluido com Sucesso");
+	public void deletar(@PathVariable Long id) {
+		service.deletar(id);
 	}
 }
 

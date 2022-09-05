@@ -34,8 +34,5 @@ public class SegPerfilDto {
 	public static Page<SegPerfilDto> converter(Page<SegPerfil> segPerfi){
 		return segPerfi.map(SegPerfilDto::new);
 	}
-
-	
-	
 	
 }

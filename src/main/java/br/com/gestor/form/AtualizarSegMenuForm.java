@@ -1,15 +1,7 @@
 package br.com.gestor.form;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-
-public class SegMenuForm {
+public class AtualizarSegMenuForm {
 	
-	@NotBlank
 	private String nome;
 	private Long idSegMenuPai;
 	private Long idSegAplicacao;
@@ -32,6 +24,7 @@ public class SegMenuForm {
 	public void setIdSegAplicacao(Long idSegAplicacao) {
 		this.idSegAplicacao = idSegAplicacao;
 	}
-
 	
+	
+
 }

@@ -45,9 +45,9 @@ public class SegAplicacao implements Serializable {
 	@OneToMany(mappedBy = "idAplicacao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SegPerfilAplicacao> segPerfilAplicacao;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_seg_menu", referencedColumnName = "id")
-	private SegMenu segMenu;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "id_seg_menu", referencedColumnName = "id")
+//	private SegMenu segMenu;
 	
 	public SegAplicacao() {}
 
@@ -89,6 +89,14 @@ public class SegAplicacao implements Serializable {
 	public void setSegPerfilAplicacao(Set<SegPerfilAplicacao> segPerfilAplicacao) {
 		this.segPerfilAplicacao = segPerfilAplicacao;
 	}
+	
+//	public SegMenu getSegMenu() {
+//		return segMenu;
+//	}
+//
+//	public void setSegMenu(SegMenu segMenu) {
+//		this.segMenu = segMenu;
+//	}
 
 	@Override
 	public int hashCode() {

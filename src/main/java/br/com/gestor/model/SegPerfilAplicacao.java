@@ -44,12 +44,12 @@ public class SegPerfilAplicacao implements Serializable {
 	private Integer paginaInicial;
 
 	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_seg_perfil", referencedColumnName = "id")
 	private SegPerfil idPerfil;
 	
 	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_seg_aplicacao", referencedColumnName = "id")
 	private SegAplicacao idAplicacao;
 	

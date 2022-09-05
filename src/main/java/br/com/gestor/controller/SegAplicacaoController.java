@@ -28,66 +28,43 @@ import br.com.gestor.service.SegAplicacaoService;
 @RestController
 @RequestMapping("/segAplicacao")
 public class SegAplicacaoController {
-	
-	
+
 	@Autowired
 	private SegAplicacaoService service;
-	
-		
+
 	@GetMapping
 	public List<SegAplicacao> buscarAplicacao() {
 		return service.buscarTodasAplicacao();
 	}
-	
+
 	@GetMapping("/{id}")
 	public SegAplicacao buscarAplicacaoPorId(@PathVariable Long id) {
 		Optional<SegAplicacao> aplicacaoPorId = service.burcarAplicacaoPorId(id);
 		return aplicacaoPorId.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Object> cadastrar(@RequestBody @Valid SegAplicacaoForm form) {
-		SegAplicacao aplicacao = new SegAplicacao();
-		BeanUtils.copyProperties(form, aplicacao);
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAplicacao(aplicacao));
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAplicacao(form));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody @Valid SegAplicacaoForm form){
-		Optional<SegAplicacao> segAplicacaoOptional = service.burcarAplicacaoPorId(id);
-		
-		if (!segAplicacaoOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aplicação não encontrada!");
-		}
-		
-		SegAplicacao segAplicacao = segAplicacaoOptional.get();
-		BeanUtils.copyProperties(form, segAplicacao, "id");
-		segAplicacao.setId(segAplicacaoOptional.get().getId());
-		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarAplicacao(segAplicacao));
+	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody @Valid SegAplicacaoForm form) {
+		return ResponseEntity.status(HttpStatus.OK).body(service.atualizarAplicacao(id, form));
 	}
 
-	
 	@DeleteMapping("/{id}")
 	public void deletarAplicacao(@PathVariable Long id) {
-		Optional<SegAplicacao> buscarAplicacao = Optional.ofNullable(service.burcarAplicacaoPorId(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-
-		if (buscarAplicacao.isPresent()) {
-			service.deletar(id);
-		}
+		service.deletar(id);
 	}
-	
-	
-	
-	
-	
+
 //	@GetMapping
 //	public String buscarAplicacao(Model model, SegAplicacao segAplicacao) {
 //		Optional<SegAplicacao> aplicacaoPorId = aplicacaoRepository.findById(segAplicacao.getId());
 //		model.addAttribute("descricao", aplicacaoPorId);
 //		return aplicacaoPorId.toString();
 //	}
-	
+
 //	@PostMapping
 //	@Transactional
 //	public ResponseEntity<SegAplicacaoDto> cadastrarAplicacao(@RequestBody @Valid SegAplicacaoForm form, UriComponentsBuilder uriBuilder) {
@@ -97,7 +74,7 @@ public class SegAplicacaoController {
 //		URI uri = uriBuilder.path("/segAplicacao/{id}").buildAndExpand(segAplicacao.getId()).toUri();
 //		return ResponseEntity.created(uri).body(new SegAplicacaoDto(segAplicacao));
 //	}
-	
+
 //	@PutMapping("/{id}")
 //	@Transactional
 //	public ResponseEntity<SegAplicacaoDto> atualizarAplicacao(@PathVariable Long id, @RequestBody @Valid AtualizacaoSegAplicacaoForm form ){
@@ -109,7 +86,7 @@ public class SegAplicacaoController {
 //		}
 //		return ResponseEntity.notFound().build();
 //	}
-	
+
 //	@GetMapping("/{id}")
 //	@Transactional
 //	public ResponseEntity<SegAplicacaoDto> detalhar(@PathVariable Long id) { 
@@ -119,7 +96,7 @@ public class SegAplicacaoController {
 //		}
 //		return ResponseEntity.notFound().build();
 //	}
-	
+
 //	@DeleteMapping("/{id}")
 //	@Transactional
 //	public ResponseStatusException deletar(@PathVariable Long id) {
