@@ -73,16 +73,21 @@ public class SegMenuService {
 
 	@Transactional
 	public SegMenuDto converterForm(SegMenuForm segMenuForm) {
-		Optional<SegAplicacao> segAplicacao = aplicacaoPorId(segMenuForm.getIdSegAplicacao());
 		SegMenu menu = new SegMenu();
-		if (!segAplicacao.isPresent()) {
-			menu.setNome(segMenuForm.getNome());
-			menu.setIdSegMenuPai(segMenuForm.getIdSegMenuPai());
-			return salvarMenu(menu);
-		}
+		menu.setIdSegAplicacao(buscarIdSegAplicacao(segMenuForm));
 		menu.setNome(segMenuForm.getNome());
 		menu.setIdSegMenuPai(segMenuForm.getIdSegMenuPai());
-		menu.setIdSegAplicacao(segAplicacao.get());
 		return salvarMenu(menu);
+
+	}
+
+	private SegAplicacao buscarIdSegAplicacao(SegMenuForm segMenuForm) {
+		if (segMenuForm.getIdSegAplicacao() != null) {
+			Optional<SegAplicacao> segAplicacao = aplicacaoPorId(segMenuForm.getIdSegAplicacao());
+			if (segAplicacao.isPresent()) {
+				return segAplicacao.get();
+			}
+		}
+		return null;
 	}
 }
